@@ -1,0 +1,39 @@
+<section class="section">
+    ${!!is_logged_in ? `
+    <form action="/tasks/add" method="POST">
+        <label>
+            New task
+            <input
+                type="text"
+                name="task_content"
+                placeholder="Add a new task"
+            />
+        </label>
+        <button type="submit">Add Task</button>
+    </form>
+    <hr />
+    <form action="/tasks/update" method="POST">
+        ${taskData.length > 0 ? `
+        <ul>
+            ${taskData.map(task => `
+            <li style="width: 100%">
+                <label>${task.task}
+                    <select name="task-${task.id}">
+                        <option ${!!task.complete ? 'selected' : ''} value="true">Complete</option>
+                        <option ${!task.complete ? 'selected' : ''} value="false">Incomplete</option>
+                    </select>
+                </label>
+            </li>
+            `).join('')}
+        </ul>
+        ` : ``}
+        <button type="submit">Update Tasks</button>
+    </form>
+    ` : ``}
+
+    ${!!is_logged_in && taskData.length === 0 ? `
+    <p>No outstanding tasks</p>
+    `: ``} ${!is_logged_in ? `
+    <p>Login to Add/View Tasks</p>
+    `: `` }
+</section>
